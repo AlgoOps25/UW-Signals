@@ -16,6 +16,7 @@ class Direction(str, Enum):
     BEARISH = "bearish"
     NEUTRAL = "neutral"
     MIXED = "mixed"
+    UNKNOWN = "unknown"
 
 
 class Regime(str, Enum):
@@ -38,7 +39,7 @@ class OptionFlowEvent(BaseModel):
     expiration: str | None = None
     strike: float | None = None
     side: OptionSide | None = None
-    estimated_direction: Direction = Direction.UNKNOWN if hasattr(Direction, "UNKNOWN") else Direction.MIXED
+    estimated_direction: Direction = Direction.UNKNOWN
     premium: float | None = None
     size: int | None = None
     price: float | None = None

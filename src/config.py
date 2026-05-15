@@ -17,6 +17,12 @@ class Settings(BaseSettings):
     app_env: str = "local"
     database_url: str = "sqlite:///data/uw_signals.sqlite3"
     log_level: str = "INFO"
+    summary_interval_seconds: int = 300
+
+    discord_bot_token: str = ""
+    discord_guild_id: str = ""
+    discord_listen_channel_ids: str = ""
+    discord_summary_channel_id: str = ""
 
     discord_webhook_url: str = ""
     telegram_bot_token: str = ""
@@ -32,6 +38,18 @@ class Settings(BaseSettings):
     @property
     def stock_symbol_list(self) -> list[str]:
         return [s.strip().upper() for s in self.stock_symbols.split(",") if s.strip()]
+
+    @property
+    def all_symbol_list(self) -> list[str]:
+        return list(dict.fromkeys([*self.index_symbol_list, *self.stock_symbol_list]))
+
+    @property
+    def discord_listen_channel_id_list(self) -> list[int]:
+        return [int(c.strip()) for c in self.discord_listen_channel_ids.split(",") if c.strip()]
+
+    @property
+    def discord_summary_channel_id_int(self) -> int | None:
+        return int(self.discord_summary_channel_id) if self.discord_summary_channel_id.strip() else None
 
 
 @lru_cache
